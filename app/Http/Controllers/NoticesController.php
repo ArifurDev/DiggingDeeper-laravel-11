@@ -6,6 +6,7 @@ use App\Events\UserNotice;
 use App\Models\notices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class NoticesController extends Controller
 {
@@ -20,7 +21,12 @@ class NoticesController extends Controller
      */
     public function index()
     {
-        //
+        //caching drive file
+        Cache::add('name','Digging Deeper');
+
+        //cache get
+        $data = Cache::get('name');
+        dump($data);
     }
 
     /**
@@ -28,7 +34,11 @@ class NoticesController extends Controller
      */
     public function create()
     {
-        return view('notices');
+        //cache
+        $notices = Cache::remember('notices',3,function(){
+            return $this->Model->all();
+        });
+        return view('notices', compact('notices'));
     }
 
     /**
@@ -54,7 +64,7 @@ class NoticesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(notices $notices)
+    public function show($id)
     {
         //
     }
@@ -62,7 +72,7 @@ class NoticesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(notices $notices)
+    public function edit($id)
     {
         //
     }
@@ -70,7 +80,7 @@ class NoticesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, notices $notices)
+    public function update(Request $request,  $id)
     {
         //
     }
@@ -78,7 +88,7 @@ class NoticesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(notices $notices)
+    public function destroy($id)
     {
         //
     }
