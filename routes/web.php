@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LearnHttpController;
 use App\Http\Controllers\NoticesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,10 @@ Route::middleware('auth')->group(function () {
      * Notice Controller
      */
     Route::resource('/notices', NoticesController::class);
+    /**
+     * LearnHttpController
+     */
+    Route::get('/learn/http', LearnHttpController::class);
 });
 
 require __DIR__.'/auth.php';
