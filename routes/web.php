@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    dd(in_image("https://vai.placholder.500"));
     return view('welcome');
 });
 
