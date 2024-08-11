@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class LearnHttpController extends Controller
 {
@@ -57,7 +60,8 @@ class LearnHttpController extends Controller
         ]);
         $response->created(); //true
 
-        $response = Http::withHeaders([
+        //headers
+        $response = Http::dd()->withHeaders([
             'Content-Type' => 'application/json',
         ])->post('https://jsonplaceholder.typicode.com/posts', [
             'title' => 'foo',
@@ -65,5 +69,47 @@ class LearnHttpController extends Controller
             'userId' => 1,
         ]);
         $response->created(); //true
+
+
+        /**
+         *  timeout
+         *  The timeout method sets the maximum number of seconds to wait for a response.
+         */
+
+        $response = Http::timeout(5) // Timeout after 5 seconds
+            ->get('https://jsonplaceholder.typicode.com/posts/1');
+
+        if ($response->successful()) {
+            dd($response->json());
+        } else {
+            abort(404);
+        }
+
+        /**
+         *  retries
+         *  The retry method retries the request a specified number of times if it fails, with a delay between each attempt.
+         */
+
+        $response = Http::retry(3, 100) // retry 3 times ,with a 100ms delay between attempts
+            ->get('https://jsonplaceholder.typicode.com/posts/1');
+
+        if ($response->successful()) {
+            dd($response->json());
+        } else {
+            abort(404);
+        }
+
+
+        /**
+         *  error handling
+         *  Basic error heandling with throw() method
+         */
+
+        try {
+            $response = Http::get('https://jsonplaceholder.typicode.c0m/posts/1')->throw();
+            dd($response->json());
+        } catch (RequestException $th) {
+            return response()->json(['error' => 'Failed to fetch data.'], 500);
+        }
     }
 }
