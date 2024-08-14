@@ -1,15 +1,17 @@
 <?php
 
 use App\Http\Controllers\LearnHttpController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\NoticesController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
-    dd(in_image("https://vai.placholder.500"));
-    return view('welcome');
+    return view('home');
 });
-
+Route::get('/locale/{lang}',[LocaleController::class,'setLocale']);
 
 
 
@@ -30,6 +32,12 @@ Route::middleware('auth')->group(function () {
      * LearnHttpController
      */
     Route::get('/learn/http', LearnHttpController::class);
+
+    /**
+     * LearnLocalizationController
+     */
+
+
 });
 
 require __DIR__.'/auth.php';
