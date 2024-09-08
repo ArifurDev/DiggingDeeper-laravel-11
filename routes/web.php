@@ -3,6 +3,7 @@
 use App\Http\Controllers\LearnHttpController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\NoticesController;
+use App\Http\Controllers\notificationController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use App\Notifications\mailNotification;
@@ -34,6 +35,7 @@ Route::get('/send-notice',function (){
 });
 
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -56,6 +58,10 @@ Route::middleware('auth')->group(function () {
      * LearnLocalizationController
      */
 
+     /**
+      * NotificationController
+      */
+      Route::post('/notification/read/{id}', [notificationController::class, 'notification_read'])->name('notificatin.read');
 
 });
 
